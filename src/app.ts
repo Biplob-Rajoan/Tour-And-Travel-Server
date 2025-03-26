@@ -1,6 +1,14 @@
 import express, { Request, Response } from 'express'
+import userRouter from './module/user/user.router'
 
 const app = express()
+
+// middleware
+app.use(express.json())
+
+app.use('/api/user', userRouter)
+
+// method: POST  /api/user/create-user
 
 app.get('/', (req: Request, res: Response) => {
   res.send({
