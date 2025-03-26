@@ -42,5 +42,19 @@ const userSchema = new Schema<IUser>({
   },
 })
 
+// //hook -> pre hook
+// userSchema.pre('find', function (this, next) {
+//   this.find({ userStatus: { $eq: 'active' }})
+//   next()
+// })
+
+// //hook -> post hook
+// userSchema.post('find', function (docs, next) {
+//   docs.foreach((docs: IUser) => {
+//     docs.name = docs.name.toUpperCase()
+//   })
+//   next()
+// })
+
 const User = model<IUser>('User', userSchema)
 export default User
