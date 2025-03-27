@@ -2,34 +2,51 @@ import { ITour } from './tour.interface'
 import Tour from './tour.model'
 
 const createTour = async (payload: ITour) => {
-  const result = await Tour.create(payload)
+  //   const result = await Tour.create(payload)
+
+  const data = new Tour(payload)
+
+  //   data.color = "red"
+
+  const result = await data.save()
   return result
 }
 
 const getTours = async () => {
-  const result = await Tour.find()
+  const result = Tour.find()
   return result
 }
 
-const getsingleTour = async (id: string) => {
-  const result = await Tour.findById(id)
+const getSingleTour = async (id: string) => {
+  const result = Tour.findById(id)
   return result
 }
 
-const getUpdateTour = async (id: string, payload: Partial<ITour>) => {
-  const result = await Tour.findByIdAndUpdate(id, payload)
+const updateTour = async (id: string, payload: Partial<ITour>) => {
+  const result = Tour.findByIdAndUpdate(id, payload)
   return result
 }
 
 const deleteTour = async (id: string) => {
-  const result = await Tour.findByIdAndDelete(id)
+  const result = Tour.findByIdAndDelete(id)
   return result
+}
+
+const getNextSchedule = async (id: string) => {
+  const tour = await Tour.getNextNearestStartDateAndEndData()
+  //   const nextSchedule = tour?.getNextNearestStartDateAndEndData()
+
+  return {
+    tour,
+    // nextSchedule,
+  }
 }
 
 export const tourService = {
   createTour,
   getTours,
-  getsingleTour,
-  getUpdateTour,
+  getSingleTour,
+  updateTour,
   deleteTour,
+  getNextSchedule,
 }
