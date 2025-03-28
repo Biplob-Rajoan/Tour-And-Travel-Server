@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import mongoose from 'mongoose'
 import Tour from '../tour/tour.model'
 import { IBooking } from './booking.interface'
@@ -38,10 +39,10 @@ const createBooking = async (payload: IBooking): Promise<IBooking> => {
    * clone database
    * sandbox - test database\
    * test database
-   * 
+   *
    * database - error
    * database - delete
-   * 
+   *
    * database - success
    * database - merge
    */
@@ -51,9 +52,7 @@ const createBooking = async (payload: IBooking): Promise<IBooking> => {
   session.startTransaction()
 
   try {
-
-    
-        const { tour, bookedSlots } = payload
+    const { tour, bookedSlots } = payload
     const requiredTour = await Tour.findById(tour)
     if (!requiredTour) {
       throw new Error('Tour not found')
@@ -67,10 +66,12 @@ const createBooking = async (payload: IBooking): Promise<IBooking> => {
       throw new Error('Not enough seats available')
     }
     const booking = await Booking.create([payload], { session })
+
+    console.log('booking', booking)
     //throw new Error('Failed to create booking')
     //availableSeats  = availableSeats - bookedSlots
     const updatedTour = await Tour.findByIdAndUpdate(
-      tour,
+      booking[0].tour,
       {
         $inc: { availableSeats: -bookedSlots },
       },
@@ -79,14 +80,16 @@ const createBooking = async (payload: IBooking): Promise<IBooking> => {
     if (!updatedTour) {
       throw new Error('Failed to update tour')
     }
-    return booking
 
+    await session.commitTransaction()
+    await session.endSession()
 
-    
+    return booking[0]
   } catch (error) {
-    
+    await session.abortTransaction()
+    await session.endSession()
+    throw error
   }
-
 }
 
 export const bookingService = {
