@@ -1,8 +1,9 @@
 import express, { Request, Response } from 'express'
 import userRouter from './module/user/user.router'
 import tourRouter from './module/tour/tour.router'
-import { StatusCodes } from 'http-status-codes'
+//import { StatusCodes } from 'http-status-codes'
 import bookingRouter from './module/Booking/booking.routes'
+import { globalErrorHandler } from './middlewares/globalErrorHandler'
 
 const app = express()
 
@@ -22,12 +23,14 @@ app.get('/', (req: Request, res: Response) => {
   })
 })
 
-app.use((err: Error, req: Request, res: Response) => {
-  console.log(err)
-  res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+app.use(globalErrorHandler)
+
+//Route not found error
+app.use('*', (req: Request, res: Response) => {
+  res.status(404).json({
     status: false,
-    message: err.message,
-    error: err,
+    message: 'Route Not Found',
   })
 })
 
