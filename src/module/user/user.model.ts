@@ -3,8 +3,10 @@ import { IUser } from './user.interface'
 
 const userSchema = new Schema<IUser>({
   name: {
-    first: { type: String, required: [true, 'Please enter your first name'] },
-    last: { type: String, required: [true, 'Please enter your last name'] },
+    type: String,
+    required: [true, 'Please enter your name'],
+    minlength: 3,
+    maxlength: 50,
   },
   age: {
     type: Number,

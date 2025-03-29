@@ -1,5 +1,6 @@
 import { Response } from 'express'
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const handleZodError = (err: any, res: Response) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const issues = err.issues.map((item: any) => {

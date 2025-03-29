@@ -1,14 +1,12 @@
 import { z } from 'zod'
 
 const userValidationSchema = z.object({
-  name: z.object({
-    first: z.string({
-      required_error: 'Frist name must be provided and must be a string',
-    }),
-    last: z.string({
+  name: z
+    .string({
       required_error: 'Last name must be provided and must be a string',
-    }),
-  }),
+    })
+    .min(3)
+    .max(50),
 
   age: z
     .number({

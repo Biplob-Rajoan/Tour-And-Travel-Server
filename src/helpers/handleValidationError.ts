@@ -7,6 +7,7 @@ export const handleValidationError = (err: any, res: Response) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const issues = Object.values(err.errors).map((item: any) => {
     return {
+      name: item.name,
       path: item.path,
       message: item.message,
     }
