@@ -18,8 +18,6 @@ const getTours = async (query: Record<string, unknown>) => {
 
   const queryObj = { ...query }
 
- 
-
   const excludingImportant = ['searchTerm']
 
   //jesob field amader filtering a dorkar nai sesob baad dissi
